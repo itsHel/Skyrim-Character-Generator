@@ -1,8 +1,9 @@
-
-<!doctype html>
+<!DOCTYPE html>
 <html>
     <head>
+        <title>Skyrim Character Generator</title>
         <link rel=icon href="races/icon.png">
+
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <style type=text/css>
             @import url('https://fonts.googleapis.com/css?family=Averia+Serif+Libre');
@@ -22,24 +23,12 @@
                 font-family: 'Averia Serif Libre';
                 font-weight: bold;
             }
-            /*
-            html::after{
-                content:"";
-                background-image: url("back.png");
-                width:100%;
-                height:100%;
-                top:0; left:0;
-                position:Absolute;
-                z-index:-1;
-                filter:brightness(50%);
-            }
-            */
             a:hover{
                 text-decoration: underline;
             }
-            @media all and (max-width:1000px) {
+            /* @media all and (max-width:1000px) {
                 
-            }
+            } */
             main{
                 margin:0 auto;
                 padding:55px 20px;
@@ -129,9 +118,9 @@
                 transition: all 0.3s;
             }
             
-            .gift, .curse{
-                /*display:none;*/
-            }
+            /* .gift, .curse{
+                display:none;
+            } */
             .class{
                 cursor:help;
                 display:inline-block;
@@ -160,10 +149,9 @@
                 margin:0 0 2px 4px;
             }
         </style>
-        <title>Skyrim Character Generator</title>
     </head>
+
     <script>
-        // multiple rows?
         const races = ["Altmer (High Elf)","Argonian","Bosmer (Wood Elf)","Breton","Dunmer (Dark Elf)","Imperial","Khajiit","Nord","Orsimer","Redguard"];
         const spec = ["Archer","Barbarian","Crusader","Knight","Rogue","Scout","Warrior","Battlemage","Healer","Mage","Nightblade","Sorcerer","Spellsword","Witchhunher","Acrobat","Agent","Assassin","Bard","Monk","Pilgrim","Thief"];
         const birthsigns = ["The Lover","The Lord","The Mage","The Shadow","The Steed","The Apprentice","The Warrior","The Lady","The Tower","The Atronach","The Thief", "The Serpent"];
@@ -193,6 +181,8 @@
             this.img = "",
             
             this.create = function(type = -1){
+                // type -1 = update all
+
                 if(type == -1 || type == 0)
                     this.race = races[Math.floor(Math.random() * races.length)];
                 if(type == -1 || type == 1)
@@ -281,11 +271,11 @@
                 }
                 if(type == -1 || type == 5)
                     this.god = (!isEvil) ? aedra[Math.floor(Math.random() * aedra.length)] : daedra[Math.floor(Math.random() * daedra.length)];
-                if(type == -1 || type == 6)
-                    this.blessing = blessings[Math.floor(Math.random() * blessings.length)];
                 if(type == -1 || type == 7)
+                    this.blessing = blessings[Math.floor(Math.random() * blessings.length)];
+                if(type == -1 || type == 8)
                     this.curse = curses[Math.floor(Math.random() * curses.length)];
-                if(type == -1 || type == 8){
+                if(type == -1 || type == 6){
                     x = -1;
                     switch(this.race){
                         case "Breton":
@@ -326,10 +316,12 @@
                     this.start = start[Math.floor(Math.random() * start.length)];
                     start.splice(x,x * -1);
                 }
+
                 if(type == -1 || type == 0)
                     this.img = "races/" + this.race.split(" ")[0] + ".png";
             }
-            this.show = function(){
+
+            this.show = function(type = -1){
                 $(".race").text(this.race);
                 $(".class").html(this.spec + "<img id=info src='races/info.png'><div><ul>" + classText + "</ul></div>");
                 $(".birthsign").text(this.birthsign);
@@ -339,17 +331,40 @@
                 $(".start").text(this.start);
                 $("#blessing").text(this.blessing);
                 $("#curse").text(this.curse);
-                $(".col3 img").attr("src",this.img);
+
+                if(type == -1 || type ==0){
+                    $(".col3 img").attr("src", this.img);
+                }
+
+                if(type == -1 || type == 6 || type == 7 || type == 8){
+                    updateButtonsPositions();
+                }
+            }
+
+            function updateButtonsPositions(){
+                let startHeight = $(".start").height();
+                let giftHeight = $("#blessing").height();
+
+                let $buttonWrapper1 = $(".col1 .gift");
+                let $buttonWrapper2 = $(".col1 .curse");
+
+                let margin1 = (startHeight - $buttonWrapper1.height()) + "px";
+                let margin2 = (giftHeight - $buttonWrapper2.height()) + "px";
+
+                $buttonWrapper1.css({marginTop: margin1});
+                $buttonWrapper2.css({marginTop: margin2});
             }
         };
+
         $(function(){
             var test = new character();
             test.create();
             test.show();
+
             $(".refresh").each(function(index){
                 $(this).on("click", function(){
                     test.create(index);
-                    test.show();
+                    test.show(index);
                 });
             });
             $(".generate").on("click", function(){
@@ -365,10 +380,10 @@
             });
         });
     </script>
+
     <body>
-        <header>
-        </header>
         <div class=background></div>
+
         <main>
             <div class=top>
                 <h1>Skyrim Character Generator</h1>
@@ -402,9 +417,5 @@
                 </div>
             </div>
         </main>
-        
-        <footer>
-        </footer>
     </body>
-    
 </html>
