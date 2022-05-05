@@ -1,0 +1,25 @@
+{
+  "name": "Skyrim Character Generator",
+  "short_name": "Skyrim Character Generator",
+  "description": "q",
+  "icons": [
+    {
+      "src": "./img/rainy-night-192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./img/rainy-night-512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/_old/g/index.html",
+  "__start_url": "./index.html",
+  "_start_url": "http://localhost/_old/g/index.html",
+  "background_color": "#000",
+  "display": "standalone",
+  "__scope": "./",
+  "_scope": "http://localhost/_old/g/",
+  "theme_color": "#000"
+}
