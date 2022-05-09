@@ -1,6 +1,7 @@
 const cacheName = 'Generator-v1';
 const appShellFiles = [
-    "/_old/g/index.html",
+    "./",
+    "./index.html",
     "./manifest.json",
     "./style.css",
     "./script.js",
@@ -30,32 +31,18 @@ self.addEventListener('install', (e) => {
     });
 });
 
-self.addEventListener('activate', (e) => {
-    // e.waitUntil(caches.keys().then(keys => {
-    //     return Promise.all(keys.map(key => {
-    //         if(key == cacheName)
-    //             return; 
-            
-    //         return caches.delete(key);
-    //     }));
-    // }));
-});
-
 self.addEventListener('fetch', (e) => {
     e.respondWith((async () => {
-        try{
-            let response = await fetch(e.request);
+        const cachedResponse = await caches.match(e.request);
+        
+        if(cachedResponse) 
+            return cachedResponse;
 
-            return response;
-        } catch(error){
-            // Return cached data on error
-            const cache = await caches.open(cacheName);
-            let cacheResponse = await cache.match(e.request, {ignoreSearch: true});
-console.log(e.request);
-            console.log(`[Service Worker] Fetching catched resource: ${e.request.url}`);
-            console.log(cacheResponse);
-    
-            return cacheResponse;
-        }
+        const response = await fetch(e.request);
+        const cache = await caches.open(cacheName);
+        cache.put(e.request, response.clone());
+        
+        return response;
     })());
 });
+  
