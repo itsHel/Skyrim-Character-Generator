@@ -31,6 +31,17 @@ self.addEventListener('install', (e) => {
     });
 });
 
+self.addEventListener('activate', (e) => {
+    e.waitUntil(caches.keys().then(keys => {
+        return Promise.all(keys.map(key => {
+            if(key == cacheName)
+                return; 
+            
+            return caches.delete(key);
+        }));
+    }));
+});
+
 self.addEventListener('fetch', (e) => {
     e.respondWith((async () => {
         // if(e.request.url.startsWith('chrome-extension'))
