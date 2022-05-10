@@ -1,8 +1,7 @@
-const cacheName = 'Generator-v1';
+const cacheName = "Generator-v1";
 const appShellFiles = [
     "/Skyrim-Character-Generator/",
     "/Skyrim-Character-Generator/index.html",
-    "/Skyrim-Character-Generator/manifest.json",
     "/Skyrim-Character-Generator/style.css",
     "/Skyrim-Character-Generator/script.js",
     "/Skyrim-Character-Generator/worker.js",
@@ -23,7 +22,7 @@ const appShellFiles = [
 ];
 
 // Add cache only on install ?
-self.addEventListener('install', (e) => {
+self.addEventListener("install", (e) => {
     e.waitUntil(async () => {
         const cache = await caches.open(cacheName);
 
@@ -31,7 +30,7 @@ self.addEventListener('install', (e) => {
     });
 });
 
-self.addEventListener('activate', (e) => {
+self.addEventListener("activate", (e) => {
     e.waitUntil(caches.keys().then(keys => {
         return Promise.all(keys.map(key => {
             if(key == cacheName)
@@ -42,9 +41,9 @@ self.addEventListener('activate', (e) => {
     }));
 });
 
-self.addEventListener('fetch', (e) => {
+self.addEventListener("fetch", (e) => {
     e.respondWith((async () => {
-        // if(e.request.url.startsWith('chrome-extension'))
+        // if(e.request.url.startsWith("chrome-extension"))
         //     return;
 
         const cachedResponse = await caches.match(e.request);
