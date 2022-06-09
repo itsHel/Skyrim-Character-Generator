@@ -109,6 +109,7 @@ window.addEventListener("load", function(){
                         myclasses.push(0,13,14,15,16,17);
                         break;
                 }
+                
                 classText = skills.map(function(str, index){
                     if(index == myclasses[0]){
                         myclasses.shift();
@@ -116,14 +117,18 @@ window.addEventListener("load", function(){
                     } else return "";
                 }).join("");
             }
+            
             if(type == -1 || type == 4){
                 this.alingment = alingment[Math.floor(Math.random() * alingment.length)];
                 isEvil = this.alingment.match(/chaotic|evil/i) == null ? false : true;
             }
+            
             if(type == -1 || type == 5)
                 this.god = (!isEvil) ? aedra[Math.floor(Math.random() * aedra.length)] : daedra[Math.floor(Math.random() * daedra.length)];
+            
             if(type == -1 || type == 7)
                 this.blessing = blessings[Math.floor(Math.random() * blessings.length)];
+            
             if(type == -1 || type == 8)
                 this.curse = curses[Math.floor(Math.random() * curses.length)];
 
